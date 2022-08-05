@@ -1,0 +1,51 @@
+Example 1
+REM  XYZ ---This is an example of a single-line comment in PeopleCode;
+Example 2
+/*  XYZ  ---This is an example of a multi-line comment in PeopleCode. The code spans more than one line.----- */
+Example 3
+<*  XYZ ---This is another example of a PeopleCode comment.---
+/*  XYZ --- This type of comment is useful when comments are already imbedded in the code, and you do not want to remove the existing comments ---*/ *>
+
+
+/*************************** EM PSU-WARNING 8/4/2022 **************/
+
+If EM_ROUTE_TBL.DISTANCE_EM > 50 Then
+   Warning ("Distances longer than 50 miles may require refueling.");
+End-If
+If EM_ROUTE_TBL.DISTANCE_EM > 50 Then
+   Warning ("Distances longer than 50 miles may require refueling.", 100, 38);
+End-If
+
+
+/*************************** EM Otros 8/4/2022 **************/
+
+/* MFANA Dates */
+Local Field &Kick_OF;
+Local Field &Cust_DT;
+
+&Kick_OF = GetField(PSU_CUST_PROD.KICK_OFF_DT);
+&Cust_DT = GetField(PSU_CUST_PROD.PRODUCTION_DT);
+
+If &Kick_OF.Value > &Cust_DT.Value Then
+   &Kick_OF.SetDefault();
+   Error ("The Kick Off Date must be before the Anticipated Production Date ");
+End-If;
+
+/*************************** EM if and else 8/5/2022 **************/
+If EM_ROUTE_TBL.DISTANCE_EM > 50 Then
+   Warning ("Distances longer than 50 miles may require refueling.");
+Else
+   Warning ("you are free to go");
+End-If;
+
+/*************************** EM PSU-8/5/2022 FieldEdit ***********************/
+Local Field &Kick_OF;
+Local Field &Cust_DT;
+
+&Kick_OF = GetField(EM_CUST_PROD.KICK_OFF_DT);
+&Cust_DT = GetField(EM_CUST_PROD.PRODUCTION_DT);
+
+If &Kick_OF.Value > &Cust_DT.Value Then
+   &Kick_OF.SetDefault();
+   Error ("The Kick Off Date must be before the Anticipated Production Date ");
+End-If;
