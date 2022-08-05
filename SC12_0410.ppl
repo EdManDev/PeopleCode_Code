@@ -19,7 +19,7 @@ End-If
 
 /*************************** EM Otros 8/4/2022 **************/
 
-/* MFANA Dates */
+/* OLD EXAMPLE Dates */
 Local Field &Kick_OF;
 Local Field &Cust_DT;
 
