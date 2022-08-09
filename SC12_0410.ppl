@@ -112,3 +112,9 @@ REM ==========================================================================;
 If EM_RT_DEP_RDR.START_DT_EM >= EM_RT_DEP_RDR.END_DT_EM Then
    Error ("The rider’s end date cannot be before the end start date");
 End-If;
+
+/************************************ EM PSU-8/9/2022 FieldEdit  **********************************/
+REM ==========================================================================  
+Writing RowInit and FieldChange PeopleCode Programs
+REM ==========================================================================;
+
