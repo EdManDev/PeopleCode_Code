@@ -7,18 +7,12 @@ Example 3
 /*  XYZ --- This type of comment is useful when comments are already imbedded in the code, and you do not want to remove the existing comments ---*/ *>
 
 
-/*************************** EM PSU-WARNING 8/4/2022 **************/
-
-If EM_ROUTE_TBL.DISTANCE_EM > 50 Then
-   Warning ("Distances longer than 50 miles may require refueling.");
-End-If
 If EM_ROUTE_TBL.DISTANCE_EM > 50 Then
    Warning ("Distances longer than 50 miles may require refueling.", 100, 38);
 End-If
 
 
-/*************************** EM Otros 8/4/2022 **************/
-
+/************************************ EM Otros 8/4/2022 **********************************/
 /* OLD EXAMPLE Dates */
 Local Field &Kick_OF;
 Local Field &Cust_DT;
@@ -31,14 +25,14 @@ If &Kick_OF.Value > &Cust_DT.Value Then
    Error ("The Kick Off Date must be before the Anticipated Production Date ");
 End-If;
 
-/*************************** EM if and else 8/5/2022 **************/
+/************************************ EM if and else 8/5/2022 **********************************/
 If EM_ROUTE_TBL.DISTANCE_EM > 50 Then
    Warning ("Distances longer than 50 miles may require refueling.");
 Else
    Warning ("you are free to go");
 End-If;
 
-/*************************** EM PSU-8/5/2022 FieldEdit ***********************/
+/************************************ EM PSU-8/5/2022 FieldEdit **********************************/
 Local Field &Kick_OF;
 Local Field &Cust_DT;
 
@@ -48,4 +42,73 @@ Local Field &Cust_DT;
 If &Kick_OF.Value > &Cust_DT.Value Then
    &Kick_OF.SetDefault();
    Error ("The Kick Off Date must be before the Anticipated Production Date ");
+End-If;
+
+/************************************ EM PSU-8/8/2022 FieldEdit **********************************/
+
+If EM_CRS_SESSN.MAX_ENROLL < 8 Then
+   Error ("LA CANTIDAD MAXIMA DE ESTUDIANTES INSCRITAS DEBE SER MENOR QUE 8");
+End-If
+
+/************************************ EM PSU-WARNING 8/4/2022 **********************************/
+REM ==========================================================================  
+1. Make sure the production date for the project is after the customer’s kick-off date. 
+REM ==========================================================================;
+
+If EM_ROUTE_TBL.DISTANCE_EM > 50 Then
+   Warning ("Distances longer than 50 miles may require refueling.");
+End-If
+
+REM ==========================================================================  UTILITIES
+        enrollment date           X      course start date
+        EM_STU_ENROLL.ENROLL_DT          EM_CRS_SESSN.START_DATE
+if ( ){
+  console.log("the enrollment date cannot be less than the course start date")
+}  
+
+----------
+
+If PSU_INSTR_CERT.CERT_STATUS = "CRT" And
+      None(PSU_INSTR_CERT.DATE) Then
+   Error ("Error");
+End-If
+
+
+REM ==========================================================================;
+
+/************************************ EM PSU-8/8/2022 FieldEdit  **********************************/
+REM ==========================================================================  
+2.	Prevent the enrollment date from being after the course start date
+REM ==========================================================================;
+
+If EM_STU_ENROLL.ENROLL_DT < EM_CRS_SESSN.START_DATE Then
+   Warning ("the enrollment date cannot be less than the course start date");
+End-If;
+
+
+/************************************ EM PSU-8/8/2022 FieldChange  **********************************/
+REM ==========================================================================  
+3. When an application user changes a student’s country,
+    warn the user that the student’s may also need to be changed. 
+REM ==========================================================================;
+
+If EM_HOTEL_TBL.COUNTRY = EM_HOTEL_TBL.COUNTRY Then
+   Warning ("Country is changed, the student may also need to be changed");
+End-If;
+
+
+/************************************ EM PSU-8/8/2022 FieldEdit  **********************************/
+REM ==========================================================================  
+4.	Make the Date Certified field a required field if the certification status is Certified. 
+REM ==========================================================================;
+
+. . .
+
+/************************************ EM PSU-00/00/2022 FieldEdit  **********************************/
+REM ==========================================================================  
+5.	Make sure a rider’s start date is before the end date. 
+REM ==========================================================================;
+
+If EM_RT_DEP_RDR.START_DT_EM >= EM_RT_DEP_RDR.END_DT_EM Then
+   Error ("The rider’s end date cannot be before the end start date");
 End-If;
