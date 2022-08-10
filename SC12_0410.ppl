@@ -113,8 +113,34 @@ If EM_RT_DEP_RDR.START_DT_EM >= EM_RT_DEP_RDR.END_DT_EM Then
    Error ("The rider’s end date cannot be before the end start date");
 End-If;
 
-/************************************ EM PSU-8/9/2022 FieldEdit  **********************************/
+/************************************ EM PSU-8/10/2022 FieldEdit  **********************************/
 REM ==========================================================================  
 Writing RowInit and FieldChange PeopleCode Programs
 REM ==========================================================================;
+
+REM ============================================================
+the application user must complete the Number of Employees field.
+Failure to do so should result in an error
+REM ============================================================;
+
+Local Field &EmpField;
+
+&EmpField = GetField(EM_CUST_PROD.EMP_NBR);
+&VarZero = 0;
+
+If None(&EmpField.Value) Then
+   Error ("For an HCM implementation the number of employees must be entered (H01).")
+End-If;
+
+REM ============================================================
+•	You should clear the Number of Clients field and make that
+ field invisible for HCMS products
+REM ============================================================;
+
+
+
+EMP_NBR = user must complete the Number of Employees field
+
+CLIENT_NBR = 
+
 
