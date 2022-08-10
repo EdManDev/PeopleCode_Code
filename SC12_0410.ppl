@@ -159,15 +159,31 @@ If None(&EmpField.Value) Then
 End-If;
 
 REM ============================================================
-•	If a customer has a Customer Relationship Management (CRM) product,
-  the application user must complete the Number of Clients field.
-  If not, generate an error similar to one shown for HRMS.  
+•	 user must complete the Number of Clients field. If not,
+   generate an error
 REM ============================================================;
+
+Local Field &clientField;
+
+&clientField = GetField(EM_CUST_PROD.CLIENT_NBR);
+
+If None(&clientField.Value) Then
+   Error ("For an HCM implementation the number of Clients must be entered (H01).")
+End-If;
 
 REM ============================================================
 •	You should clear the Number of Employees field and
    make it invisible for all CRM products  
 REM ============================================================;
+
+Local Field &clientField;
+
+&clientField = GetField(EM_CUST_PROD.CLIENT_NBR);
+
+If None(&clientField.Value) Then
+   Hide(EM_CUST_PROD.CLIENT_NBR);
+   Error ("For an HCM implementation the number of Clients must be entered (H01).")
+End-If;
 
 REM ============================================================
 •	If a customer has a product that is not an HRMS product or
@@ -175,21 +191,28 @@ REM ============================================================
   the Number of Employees field both should be cleared and invisible. 
 REM ============================================================;
 
+...
+
 REM ============================================================
 •	Issue a warning if the number of employees or clients 
   is fewer than one hundred 
 REM ============================================================;
 
+/*-------------------- FOR EMPLOYEE*/
+&varOfHundred = 100;
 
+If &EmpField.Value < &varOfHundred Then
+   Error ("the number of employees is fewer than one hundred (100).")
+End-If;
+/*--------------------*/
 
+/*-------------------- FOR CLIENT*/
+&varOfHundred = 100;
 
-
-EMP_NBR = user must complete the Number of Employees field
-
-CLIENT_NBR = You should clear the Number of Clients field and make that field invisible for HCMS products.
-
-
-
+If &clientField.Value < &varOfHundred Then
+   Error ("the number of clients is fewer than one hundred (100).")
+End-If;
+/*--------------------*/
 
 /************************************ EM PSU-8/11/2022 RowInit and FieldChange ********************/
 REM ==========================================================================  
@@ -203,3 +226,7 @@ Hints
 •	Use deferred processing mode on a field.
 •	Determine the translate values for the award field. 
 REM ============================================================;
+
+... 
+
+
