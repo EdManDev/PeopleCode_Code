@@ -222,11 +222,19 @@ REM ==========================================================================;
 REM ============================================================
   The size field should be available only if the award field value
   is PeopleSoft baseball cap or PeopleSoft T-shirt.
-Hints
-•	Use deferred processing mode on a field.
-•	Determine the translate values for the award field. 
+    Hints
+    •	Use deferred processing mode on a field.
+    •	Determine the translate values for the award field. 
 REM ============================================================;
 
-... 
+Local Field &F1;
+Local Field &F2;
 
+&F1 = GetField(PSU_STU_SUG_EM.AWARD_EM);
+&F2 = GetField(PSU_STU_SUG_EM.SIZE_JT);
 
+If &F1.Value = "P3" Then
+   Hide(PSU_STU_SUG_EM.SIZE_JT);
+Else
+   UnHide(PSU_STU_SUG_EM.SIZE_JT);
+End-If;
