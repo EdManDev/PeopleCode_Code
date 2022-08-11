@@ -1,0 +1,76 @@
+/************************************ EM PSU-8/11/2022 OBJECT ORIENTED PROGRAMMING ********************/
+REM ============================================================
+Value
+  A field object’s value can be accessed with the value property.  
+  Value is a read-write property.  
+  The following program gets the value of a field.
+  If the value is XYZ, the program sets the value to ABC.
+REM ============================================================;
+
+Local Field &MyFieldObject;
+
+&MyFieldObject = GetField(PSU_CUSTOMER_TBL.CUSTOMER);
+If &MyFieldObject.Value = ‘XYZ’ then
+  &MyFieldObject.Value = ‘ABC’;
+End-if;
+
+
+REM ============================================================
+  The following code compares values in fields.
+REM ============================================================;
+
+Local Field &FROM_DT;
+Local Field &TO_DT;
+
+&FROM_DT = GetField(PSU_EMP_REVIEW.FROM_DT);
+&TO_DT GetField(PSU_EMP_REVIEW.TO_DT);
+
+If &FROM_DT.value > &TO_DT.value then
+  . . . statement . . .;
+End-if;
+
+REM ============================================================
+Enabled 
+  Enabled is the object-oriented equivalent of 
+  the functions Gray() and UnGray().  
+  You can use it to control whether a user can edit a field 
+  on a PeopleSoft page.  If this property is set to True, 
+  the field will be editable.  If it is set to False, 
+  the edit box will appear uneditable or inactive.  
+  Enabled is a read-write property.
+  The following program deactivates an edit box associated 
+  with a given field.
+REM ============================================================;
+
+Local Field &MyFieldObject;                               /* Declare the object */
+
+&MyFieldObject = GetField(PSU_COURSE_TBL.COURSE_TYPE);    /* Instantiate the object */
+
+&MyFieldObject.Enabled = False;                           /* Manipulate the object */
+
+
+REM ============================================================
+Visible
+  Visible is the object-oriented equivalent of 
+  the functions Hide() and UnHide.  
+  You can use it to control whether 
+  a user can see a field on a PeopleSoft page.  
+  Setting a field object’s Visible property to False hides 
+  all page controls associated with that field.  
+  If this property is set to True, the field will be displayed.
+  Visible is a read-write property. 
+  The following PeopleCode statement hides the page control 
+  referencing the record.field PSU_PO_DTL.	 
+  if a user is not in Add mode.  If a user is in Add mode, 
+  however, the field will be visible and therefore editable
+REM ============================================================;
+
+Local Field &MyFieldObject;                     /* Declare the object */
+
+&MyFieldObject = GetField(PSU_PO_DTL.PRICE); /*  Instantiating the object */
+
+If %Mode = "A" Then
+   &MyFieldObject.Visible = True;
+Else
+   &MyFieldObject.Visible = False;
+End-If;
