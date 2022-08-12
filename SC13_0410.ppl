@@ -14,7 +14,6 @@ If &MyFieldObject.Value = ‘XYZ’ then
   &MyFieldObject.Value = ‘ABC’;
 End-if;
 
-
 REM ============================================================
   The following code compares values in fields.
 REM ============================================================;
@@ -42,12 +41,11 @@ Enabled
   with a given field.
 REM ============================================================;
 
-Local Field &MyFieldObject;                               /* Declare the object */
+Local Field &MyFieldObject;                                 /* Declare the object */
 
-&MyFieldObject = GetField(PSU_COURSE_TBL.COURSE_TYPE);    /* Instantiate the object */
+&MyFieldObject = GetField(PSU_COURSE_TBL.COURSE_TYPE);      /* Instantiate the object */
 
-&MyFieldObject.Enabled = False;                           /* Manipulate the object */
-
+&MyFieldObject.Enabled = False;                             /* Manipulate the object */
 
 REM ============================================================
 Visible
@@ -65,12 +63,184 @@ Visible
   however, the field will be visible and therefore editable
 REM ============================================================;
 
-Local Field &MyFieldObject;                     /* Declare the object */
+Local Field &MyFieldObject;                                 /* Declare the object */
 
-&MyFieldObject = GetField(PSU_PO_DTL.PRICE); /*  Instantiating the object */
+&MyFieldObject = GetField(PSU_PO_DTL.PRICE);                /*  Instantiating the object */
 
 If %Mode = "A" Then
-   &MyFieldObject.Visible = True;
+   &MyFieldObject.Visible = True;                           /* Manipulate the object */
 Else
    &MyFieldObject.Visible = False;
 End-If;
+
+REM ============================================================
+Style
+  If a page has a style sheet associated with it, 
+  you can use this property to specify a different style class 
+  with a field.  This property overrides the existing style
+  it does not change it.  The next time the page is accessed, 
+  the original style is used.
+  This property takes a string value and is read-write.
+  The following example associates a test field with a style class,
+  depending on the value of the field.
+REM ============================================================;
+
+Local Field &field;                                          /* Declare the object */
+
+&field = GetField(DERIVED.EDITTABLE);                        /*  Instantiating the object */
+
+If &field.value = 1 Then;
+   &field.Style = "PSHYPERLINK";
+End-If;
+                                                             /* Manipulate the object */
+If &field.value = 2 Then;
+   &field.Style = "PSIMAGE";
+End-If;
+
+REM ============================================================
+Style
+  If a page has a style sheet associated with it, 
+  you can use this property to specify a different style class 
+  with a field.  This property overrides the existing style
+  it does not change it.  The next time the page is accessed, 
+  the original style is used.
+  This property takes a string value and is read-write.
+  The following example associates a test field with a style class,
+  depending on the value of the field.
+REM ============================================================;
+
+Local Field &FROM_DT;                                         /* Declare the object */
+Local Field &TO_DT;
+
+&FROM_DT = GetField(PSU_EMP_REVIEW.FROM_DT);                  /*  Instantiating the object */
+&TO_DT GetField(PSU_EMP_REVIEW.TO_DT);
+
+If &FROM_DT.value > &TO_DT.value then                         
+  &TO_DT.SetDefault();                                        /* Manipulate the object */
+  Error (“Please enter a valid To Date that is later than “|&FROM_DT|”.”);
+End-if;
+
+/********************** EM PSU-8/12/2022 Sc13_0410.doc Writing PeopleCode Programs Using Objects ********************/
+
+REM ============================================================    
+•	                                                            PART 1
+REM ============================================================;
+
+REM ============================================================    
+•	The Number of Clients field should be invisible for HRMS products
+REM ============================================================;
+ 
+/*------------------------ i both of them work  */ 
+
+Local Field &productField;
+Local Field &clientField;
+
+&productField = GetField(EM_CUST_PROD.PRODUCT);
+&clientField = GetField(EM_CUST_PROD.CLIENT_NBR);
+
+If &productField.Value = "H01" Then
+   &clientField.Visible = False;
+Else
+   &clientField.Visible = True;
+End-If;
+
+/*------------------------ i both of them work  */ 
+
+Local Field &productField;
+
+&productField = GetField(EM_CUST_PROD.PRODUCT);
+
+If &productField.Value = "H01" Then
+   Hide(EM_CUST_PROD.CLIENT_NBR);
+Else
+   UnHide(EM_CUST_PROD.CLIENT_NBR);
+End-If;
+
+REM ============================================================ 
+•	The Number of Employees field should be invisible 
+  for all CRM products.
+REM ============================================================;
+
+Local Field &productField;
+Local Field &EmpField;
+
+&productField = GetField(EM_CUST_PROD.PRODUCT);
+&EmpField = GetField(EM_CUST_PROD.EMP_NBR);
+
+If &productField.Value = "C01" Then
+   &EmpField.Visible = False;
+End-If;
+
+If &productField.Value = "C02" Then
+   &EmpField.Visible = False;
+End-If;
+
+If &productField.Value = "C03" Then
+   &EmpField.Visible = False;
+End-If;
+
+If &productField.Value = "C04" Then
+   &EmpField.Visible = False;
+End-If;
+
+/*------------------------ LET's TRY WITH EVALUATE STATEMENT  */ 
+
+Evaluate &productField.Value
+When = "C01"
+   &EmpField.Visible = False;
+When = "C02"
+   &EmpField.Visible = False;
+When = "C03"
+   &EmpField.Visible = False;
+When = "C04"
+   &EmpField.Visible = False;
+End-Evaluate;
+
+REM ============================================================ 
+•	If a customer has a product that is not an HRMS product or 
+  a CRM product, the Number of Clients field and the Number 
+  of Employees field should be invisible.
+REM ============================================================;
+
+...
+
+REM ============================================================ 
+•	Issue a warning if the number of employees or clients 
+  is less than 100.
+REM ============================================================;
+
+...
+
+REM ============================================================    
+•	                                                            PART 2
+REM ============================================================;
+
+REM ============================================================    
+1.Make sure the kick-off date for the project is after 
+  the customer’s contract date.  If it is not, clear 
+  the Kick-Off Date field and issue an error.
+    •	Write this program by accessing the PSU_CUST_PROD record.
+    •	Test this program by accessing Customers > Products Purchased.
+REM ============================================================;
+
+...
+
+REM ============================================================    
+2.Prevent the enrollment date from being after the course start date.
+    •	Write this program by accessing the PSU_STU_ENROLL record.
+    •	Test this program by accessing Courses > Student Enrollment.
+REM ============================================================;
+
+...
+
+REM ============================================================    
+3.Make sure a rider’s start date is before the end date.
+    If it is not, clear the End Date field and issue an error.
+    •	Write this program by accessing the PSU_RT_DEP_RDRS record.
+    •	Test this program 
+      by accessing Students > PeopleSoft Shuttle Signup.
+REM ============================================================;
+
+...
+
+
