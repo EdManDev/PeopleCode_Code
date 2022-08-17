@@ -1,19 +1,28 @@
 /************************************ EM PSU-8/15/2022 Using PeopleSoft Style Sheets ********************/
+
+/* ------------ PeopleCode and the Style Property ------------ */
+
+Local Field &field;                     /* Declare the object */              
+&field = GetField();                    /*  Instantiating the object */
+
+If &field.Value = 1 Then;
+   &field.Style = "PSHYPERLINK";
+End-If;                                 /* Manipulate the object */
+If &field.Value = 2 Then;
+   &field.Style = "PSIMAGE";
+End-If
+
+/************************************ EM PSU-8/17/2022 Using PeopleSoft Style Sheets ********************/
 REM ============================================================
-Part I:  Create a New Style Class
-•	Open PSU_SUBSTYLESHEET.
-•	Insert a new style class named PSU_GREEN.
-  Font: cursive
-  Color: green
-  
-Part II:  Override a Page Style Sheet
-•	Open the PSU_INSTR page and change the page style sheet to PSU_PSSTYLEDEF.
-
-Part III:  Override a Page Field Style
-•	Change the style of the LAST_NAME field to PSU_GREEN.
-•	Change the style of the LAST_NAME field label to PSU_GREEN.
-
 Part IV:  Set the Page Field Style Property With PeopleCode
 REM ============================================================;
 
-...
+local Field &field;                     /* Declare the object */
+&field = GetField();                    /*  Instantiating the object */
+
+If &field.Value = "Y" Then
+  &field.Style = 'EM_RED';
+End-If;                                 /* Manipulate the object */                                
+If &field.Value = "N" Then
+  &field.Style ="EM_YELLOW";
+End-If;
