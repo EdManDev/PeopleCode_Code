@@ -1,0 +1,29 @@
+/* PSU EdSvcs 03/11/02  
+** Set variable prompt table on REVIEWER_ID  */
+
+Evaluate PSU_EMP_RVW_RVR.REVIEW_TYPE
+When = "S"
+   /* Supervisor review */
+   DERIVED.EDITTABLE = "PSU_SUPVR_VW";
+When = "F"
+   /* Performance review */
+When = "P"
+   /* Peer review */
+   DERIVED.EDITTABLE = "PERSONAL_DATA";
+When = "E"
+   /* Self review */
+   DERIVED.EDITTABLE = "NONE";
+   /* Also need to populate field with EMPLID */
+End-Evaluate;
+
+/* Need to blank out REVIEWER_ID when Type changes
+/* and populate with EMPLID and disable if Type is Self  */
+
+/* Declare and instantiate the Record object */
+Local Record &EmpRvr;
+&EmpRvr = GetRecord(Record.PSU_EMP_RVW_RVR);
+
+If &EmpRvr.REVIEW_TYPE.Value = "E" Then
+   &EmpRvr.REVIEWER_ID.Value = PSU_EMP_RVW_RVR.EMPLID;
+   &EmpRvr.REVIEWER_ID.Enabled = False;
+End-If;
