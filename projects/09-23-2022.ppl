@@ -1,0 +1,13 @@
+/************************************ EM PSU- 9/23/2022 - Step01 - OnExecute ********************/
+REM =================================================================================
+3. Crear el código que generará el XML según los datos que contiene el File Layout.
+REM =================================================================================;
+
+Local File &oFile = GetFile("\\SVR-PS-ORA-PREP\Bitacoras\FS\PUC_ASIENT01.xml", "W", "UTF-8", &FilePath_Absolute);
+If &oFile.IsOpen Then
+   &oFile.SetFileLayout (FileLayout.PUC_ASIENTO);
+   Local Rowset &oRS = &oFile.CreateRowset();
+   &oRs.Fill("WHERE BUSINESS_UNIT = 'PUCMM' ");
+   &oFile.WriteRowset (&oRs, True);
+   &oFile.Close();
+End-If;
